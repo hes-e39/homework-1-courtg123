@@ -13,18 +13,23 @@ const COLORS = 'https://nt-cdn.s3.amazonaws.com/colors.json';
 const fetchColors = async ({ name, hex, compName, compHex }) => {
   const response = await fetch(COLORS);
 
+  // handle errors with response
+  if (!response.ok) {
+    throw new Error(`Error with response. Response status: ${response.status}`);
+  }
+
   const colors = await response.json();
 
-  // return colors, no filters yet
-  return colors;
+  // filter by name (if name contains string, case insensitive)
+  const result = colors.filter((color) => {
+    if (name) {
+      return color.name.toLowerCase().includes(name.toLowerCase());
+    }
+    return true;
+  });
 
-  //throw Error('Not implemented');
+  return result;
 };
-
-// testing if colors returned
-fetchColors({}).then(colors => {
-  console.log(colors);
-});
 
 // Leave this here
 export default fetchColors;
