@@ -10,9 +10,21 @@ const COLORS = 'https://nt-cdn.s3.amazonaws.com/colors.json';
  * @param compHex filter for complementary color hex code
  * @returns Promise
  */
-const fetchColors = ({ name, hex, compName, compHex }) => {
-  throw Error('Not implemented');
+const fetchColors = async ({ name, hex, compName, compHex }) => {
+  const response = await fetch(COLORS);
+
+  const colors = await response.json();
+
+  // return colors, no filters yet
+  return colors;
+
+  //throw Error('Not implemented');
 };
+
+// testing if colors returned
+fetchColors({}).then(colors => {
+  console.log(colors);
+});
 
 // Leave this here
 export default fetchColors;
