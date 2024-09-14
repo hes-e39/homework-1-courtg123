@@ -20,10 +20,27 @@ const fetchColors = async ({ name, hex, compName, compHex }) => {
 
   const colors = await response.json();
 
-  // filter by name (if name contains string, case insensitive)
+  // filters
   const result = colors.filter((color) => {
+    // all colors whose name contains (includes) string, case insensitive
     if (name) {
       return color.name.toLowerCase().includes(name.toLowerCase());
+    }
+    // all colors whose hex code equals given hex code
+    if (hex) {
+      return color.hex === hex
+    }
+    // all complementary colors whose name contains string, case insensitive
+    if (compName) {
+      return color.comp.some(complementaryColor =>
+        complementaryColor.name.toLowerCase().includes(compName.toLowerCase())
+      );
+    }
+    // all complementary colors whose hex code equals given hex code
+    if (compHex) {
+      return color.comp.some(complementaryColor =>
+        complementaryColor.hex.toLowerCase() === compHex.toLowerCase()
+      );
     }
     return true;
   });
